@@ -1,14 +1,15 @@
 package com.wyh.dark_horse.api;
 
 import com.wyh.dark_horse.api.dto.MarginDto;
+import com.wyh.dark_horse.infrastructure.client.PaymentClientImpl;
 import com.wyh.dark_horse.infrastructure.client.feign.PaymentFeign;
 import com.wyh.dark_horse.margin.model.MarginResult;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -19,14 +20,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class MarginControllerTest {
-    @MockBean
+class MarginControllerTest extends BaseApi {
     private PaymentFeign paymentFeign;
 
     @Autowired
+    private PaymentClientImpl paymentClient;
+
+    @Autowired
     private MockMvc mockMvc;
+
+    @BeforeEach
+    void setUp() {
+        paymentFeign = Mockito.mock(PaymentFeign.class);
+        ReflectionTestUtils.setField(paymentClient, "paymentFeign", paymentFeign);
+    }
 
     @Test
     public void should_margin_successful() throws Exception {

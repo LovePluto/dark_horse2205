@@ -30,7 +30,9 @@ class MarginServiceTest {
 
     @Test
     public void should_margin_successful() {
-        when(paymentClient.payment(any())).thenReturn(new MarginResult());
+        MarginResult marginResult = new MarginResult();
+        marginResult.setResult(true);
+        when(paymentClient.payment(any())).thenReturn(marginResult);
 
         String result = marginService.create(new Margin());
 
