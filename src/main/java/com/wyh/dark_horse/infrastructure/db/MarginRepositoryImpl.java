@@ -7,6 +7,9 @@ import com.wyh.dark_horse.margin.repository.MarginRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
+import java.util.List;
+
 @Repository
 @AllArgsConstructor
 public class MarginRepositoryImpl implements MarginRepository {
@@ -15,5 +18,10 @@ public class MarginRepositoryImpl implements MarginRepository {
     @Override
     public void save(Margin margin) {
         marginJpa.save(MarginEntity.from(margin));
+    }
+
+    @Override
+    public List<Margin> getWaitingConfirmData() {
+        return Collections.emptyList();
     }
 }
