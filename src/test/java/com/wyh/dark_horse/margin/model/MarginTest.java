@@ -2,6 +2,8 @@ package com.wyh.dark_horse.margin.model;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static com.wyh.dark_horse.margin.model.MarginStatus.CONFIRM;
 import static com.wyh.dark_horse.margin.model.MarginStatus.WAITING_CONFIRM;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,7 +27,7 @@ class MarginTest {
         MarginResult marginResult = MarginResult.builder()
                 .result(true)
                 .id("id")
-                .price("22")
+                .price(new BigDecimal("11"))
                 .build();
 
         margin.update(marginResult);
