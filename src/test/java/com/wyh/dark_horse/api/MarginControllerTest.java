@@ -29,7 +29,7 @@ class MarginControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void should_book_tickets_successfully() throws Exception {
+    public void should_margin_successful() throws Exception {
         MarginDto dto = new MarginDto("goodId", new BigDecimal("22"));
         MarginResult marginResult = new MarginResult(true, "marginId", new BigDecimal("22"), "id", null);
         when(paymentFeign.payment(any())).thenReturn(marginResult);
@@ -38,5 +38,17 @@ class MarginControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void should_margin_failed() throws Exception {
+        MarginDto dto = new MarginDto("goodId", new BigDecimal("22"));
+        MarginResult marginResult = new MarginResult(false, "marginId", new BigDecimal("22"), "id", null);
+        when(paymentFeign.payment(any())).thenReturn(marginResult);
+
+        mockMvc.perform(post("/auctions/margins", dto)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().isConflict());
     }
 }
