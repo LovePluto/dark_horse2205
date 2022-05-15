@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @ControllerAdvice
 @ResponseBody
@@ -26,5 +27,12 @@ public class GlobalException {
     public ErrorBody handlerMarginException(MarginException e) {
         log.error("margin failed!", e);
         return new ErrorBody(4001, e.getMessage());
+    }
+
+    @ExceptionHandler(PaymentException.class)
+    @ResponseStatus(code = SERVICE_UNAVAILABLE)
+    public ErrorBody handlerPaymentException(PaymentException e) {
+        log.error("payment failed!", e);
+        return new ErrorBody(4002, e.getMessage());
     }
 }
