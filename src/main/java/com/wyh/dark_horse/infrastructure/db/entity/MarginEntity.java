@@ -40,4 +40,8 @@ public class MarginEntity {
                 .createdAt(margin.getCreatedAt())
                 .build();
     }
+
+    public Margin toMargin() {
+        return new Margin(id, goodId, price, paymentId, status, createdAt);
+    }
 }
