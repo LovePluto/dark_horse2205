@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -35,5 +36,15 @@ class MarginServiceTest {
 
         assertThat(result).isNotEmpty();
         verify(marginRepository, times(2)).save(any());
+    }
+
+    @Test
+    public void should_margin_failed() {
+        MarginResult marginResult = new MarginResult();
+        marginResult.setResult(false);
+        when(paymentClient.payment(any())).thenReturn(marginResult);
+
+        assertThatThrownBy(() -> marginService.create(new Margin()))
+                .hasMessage("账户余额不足，请确认账户是否有足够余额缴纳保证金！");
     }
 }
