@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,7 +16,7 @@ import lombok.Setter;
 public class MarginResult {
     private Boolean result;
     private String marginId;
-    private String price;
+    private BigDecimal price;
     private String id;
     private String errorMessage;
 }
