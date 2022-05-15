@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -31,5 +32,15 @@ class PaymentClientImplTest {
         MarginResult result = paymentClient.payment(new Margin());
 
         assertThat(result.getId()).isEqualTo("id");
+    }
+
+    @Test
+    void should_payment_failed() {
+        when(paymentFeign.payment(any())).thenThrow(new RuntimeException());
+
+        assertThatThrownBy(() -> paymentClient.payment(new Margin()))
+                .hasMessage("支付失败，如果发生扣款，三个工作日内进行退款！");
+
+
     }
 }
